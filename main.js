@@ -1,51 +1,77 @@
-//Lista de tareas 
 
-let agregarNuevatarea = true;
 let listaDeTareas = new ListaDeTareas();
-let opcionSeleccionada
 
-while (agregarNuevatarea) {
+tieneListadoUserLogeado()
 
-    opcionSeleccionada = prompt("Ingrese que acción desea realizar \n1.- Agregar\n2.- Eliminar\n3.- Listar")
-
-    if (opcionSeleccionada != null) {
-        accionARealizar(opcionSeleccionada.toLowerCase().trim())
-    }
-
-    agregarNuevatarea =  confirm("Desea volver a operar?");
-    
-}
-
-
-function accionARealizar(opcionSeleccionada) {
-
-    if (opcionSeleccionada === "1" || opcionSeleccionada === "2" || opcionSeleccionada === "3") {
+function tieneListadoUserLogeado() {
+    if (sessionStorage.getItem("tarea") != null) {
         
-        opcionSeleccionada = Number(opcionSeleccionada)
-        switch (opcionSeleccionada) {
-            case 1:
-                let nombreDeTarea = prompt("Agregue el nombre de la tarea").toLowerCase().trim()
-                let descripcionTarea = prompt("Agregue la descripcion de la tarea").toLowerCase().trim()
-    
-                listaDeTareas.agregarTarea(new Tarea(nombreDeTarea, descripcionTarea))
-    
-                break;
-            case 2:
-                
-                let idItem = prompt("Ingrese el id del item que desea eliminar").toLowerCase().trim()
-                listaDeTareas.eliminadoLogicoTarea(idItem);
-                
-                break;
-            case 3:
-                listaDeTareas.listarTareas()
-                    break;
-            default:
-                break;
-        }
+        let listadoTareasStorage = JSON.parse(sessionStorage.getItem("tarea"))
 
-    }else{
+        listadoTareasStorage.forEach(e => {
+            
+            listaDeTareas.agregarTarea(new Tarea( e.idUsuario, e.nombre, e.descripcion))
+        });
 
-        alert("La opción ingresada no es válida. Por favor, ingrese 1, 2 o 3.");
+        listaDeTareas.listarTareas()
+    }
+      
+}
+
+
+let btnAgregar = document.querySelector("#btnAgregar")
+let btnEliminar = document.querySelector("#btnEliminar")
+
+btnAgregar.addEventListener("click", (e) => {
+
+    const inputAgregar = document.querySelector("#formAgregar");
+
+    const inputIdEliminar = document.querySelector("#idTarea");
+    inputIdEliminar.style.display = "none"
+
+    if (inputAgregar.style.display =='none') {
+        return inputAgregar.style.display =  "block" 
+    }
+    
+    let nombreTarea = document.querySelector("#nombreTarea").value
+    let descripcionTarea = document.querySelector("#descripcionTarea").value
+
+    if (nombreTarea == "") {
+        return alert("Tiene que ingresar un nombre")
+    }if (descripcionTarea == "") {
+        return alert("Tiene que ingresar una descripcion")
     }
 
-}
+    listaDeTareas.agregarTarea(new Tarea( Number(sessionStorage.getItem('idUsuario')), nombreTarea, descripcionTarea))
+
+    listaDeTareas.listarTareas()
+});
+
+btnEliminar.addEventListener("click", (e)=> {
+
+    const inputAgregar = document.querySelector("#formAgregar");
+    inputAgregar.style.display = "none"
+
+    const inputIdEliminar = document.querySelector("#idTarea");
+    
+    if (inputIdEliminar.style.display == "none") {
+        return inputIdEliminar.style.display = "block"
+    }
+    
+    let valueEliminar = document.querySelector("#idTareaValue");
+    
+
+    listaDeTareas.eliminadoLogicoTarea(valueEliminar.valueAsNumber);
+
+    if (listaDeTareas.tareas.length >= 0) {
+        listaDeTareas.listarTareas()
+    }
+    
+});
+
+var btnDeslogear = document.querySelector("#deslogear")
+
+btnDeslogear.addEventListener("click", (e) => {
+    window.location  = 'login.html'
+});
+

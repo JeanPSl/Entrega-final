@@ -6,28 +6,41 @@ class ListaDeTareas {
     }
   
     agregarTarea(tarea) {
-        this.tareas.push(tarea);
+      this.tareas.push(tarea)
     }
     
     eliminadoLogicoTarea(idItem) {
-
+      
         if (this.tareas.length == 0 ) return alert("No tiene items para eliminar")
 
         let itemAEliminar = this.tareas.find(tarea => tarea.id == idItem);
 
+        if (itemAEliminar == undefined) return alert("ID no existe")
+
         itemAEliminar.id = Math.floor(Math.random() * -100) + 1;
 
         this.tareas = this.tareas.filter(tarea => tarea.id >= 0 );
+
+        sessionStorage.setItem('tarea',JSON.stringify(this.tareas))
         
     }
     
     listarTareas() {
-        
-        if (this.tareas.length == 0 ) return alert("No tiene items para listar")
 
-        this.tareas.forEach(tarea => {
-          console.log(`.- ${tarea.id} ${tarea.nombre}: ${tarea.descripcion} `);
+        let contenedorTareas = document.getElementById('contenedor-tareas');
+        contenedorTareas.style.display = "block"
+        contenedorTareas.innerHTML = '';
+        
+        let tareasFiltrada = this.tareas.filter(t => t.idUsuario == Number(sessionStorage.getItem('idUsuario')) )
+
+        tareasFiltrada.forEach(tarea => {
+
+          let tareaElemento = document.createElement('div');
+          tareaElemento.innerHTML = `.- ${tarea.id} ${tarea.nombre}: ${tarea.descripcion}`;
+          contenedorTareas.appendChild(tareaElemento);
         });
+
+        sessionStorage.setItem('tarea',JSON.stringify(this.tareas))
     }
 }
 
