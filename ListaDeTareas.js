@@ -13,7 +13,7 @@ class ListaDeTareas {
       
         if (this.tareas.length == 0 ) return alert("No tiene items para eliminar")
 
-        let itemAEliminar = this.tareas.find(tarea => tarea.id == idItem);
+        let itemAEliminar =  this.tareas.find(tarea => tarea.id == idItem && tarea.idUsuario == Number(sessionStorage.getItem('idUsuario')))
 
         if (itemAEliminar == undefined) return alert("ID no existe")
 
