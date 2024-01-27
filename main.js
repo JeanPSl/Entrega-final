@@ -37,9 +37,29 @@ btnAgregar.addEventListener("click", (e) => {
     let descripcionTarea = document.querySelector("#descripcionTarea").value
 
     if (nombreTarea == "") {
-        return alert("Tiene que ingresar un nombre")
+        return Toastify({
+
+            text: "Tiene que ingresar un nombre",
+            gravity: 'top',
+            position:'left',
+            duration: 3000,
+            offset:{
+              x:'35vw'
+            }
+            
+          }).showToast();
     }if (descripcionTarea == "") {
-        return alert("Tiene que ingresar una descripcion")
+        return Toastify({
+
+            text: "Tiene que ingresar una descripcion",
+            gravity: 'top',
+            position:'left',
+            duration: 3000,
+            offset:{
+              x:'35vw'
+            }
+            
+          }).showToast();
     }
 
     listaDeTareas.agregarTarea(new Tarea( Number(sessionStorage.getItem('idUsuario')), nombreTarea, descripcionTarea))

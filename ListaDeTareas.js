@@ -15,7 +15,20 @@ class ListaDeTareas {
 
         let itemAEliminar =  this.tareas.find(tarea => tarea.id == idItem && tarea.idUsuario == Number(sessionStorage.getItem('idUsuario')))
 
-        if (itemAEliminar == undefined) return alert("ID no existe")
+        if (itemAEliminar == undefined){
+
+          return Toastify({
+
+            text: "ID no existe",
+            gravity: 'top',
+            position:'left',
+            duration: 3000,
+            offset:{
+              x:'35vw'
+            }
+            
+          }).showToast();
+        }
 
         itemAEliminar.id = Math.floor(Math.random() * -100) + 1;
 
